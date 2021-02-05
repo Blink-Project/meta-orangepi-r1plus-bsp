@@ -1,0 +1,207 @@
+From 66bd414c7d53f4b294ce8ecd9b6ab557c229d62d Mon Sep 17 00:00:00 2001
+From: Alexi Demers <ademers@newtrax.com>
+Date: Sat, 27 Feb 2021 16:46:34 -0500
+Subject: [PATCH] Adapt rk3328-evb dts to orangepi r1 plus
+
+---
+ arch/arm64/boot/dts/rockchip/rk3328-evb.dts | 136 +-------------------
+ 1 file changed, 5 insertions(+), 131 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-evb.dts b/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
+index a9f1e28aef13..c70acf01fa58 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-evb.dts
+@@ -49,7 +49,7 @@
+ 	compatible = "rockchip,rk3328-evb", "rockchip,rk3328";
+ 
+ 	chosen {
+-		bootargs = "earlycon=uart8250,mmio32,0xff130000 swiotlb=1 kpti=0 console=ttyFIQ0 root=PARTUUID=614e0000-0000 rootwait coherent_pool=1m";
++		bootargs = "earlycon=uart8250,mmio32,0xff130000 kpti=0 console=ttyFIQ0 root=/dev/mmcblk0p4 rootwait coherent_pool=1m";
+ 	};
+ 
+ 	fiq-debugger {
+@@ -96,20 +96,6 @@
+ 		};
+ 	};
+ 
+-	sdio_pwrseq: sdio-pwrseq {
+-		compatible = "mmc-pwrseq-simple";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&wifi_enable_h>;
+-
+-		/*
+-		 * On the module itself this is one of these (depending
+-		 * on the actual card populated):
+-		 * - SDIO_RESET_L_WL_REG_ON
+-		 * - PDN (power down when low)
+-		 */
+-		reset-gpios = <&gpio1 18 GPIO_ACTIVE_LOW>;
+-	};
+-
+ 	sound {
+ 		compatible = "simple-audio-card";
+ 		simple-audio-card,format = "i2s";
+@@ -136,25 +122,9 @@
+ 		};
+ 	};
+ 
+-	spdif-sound {
+-		compatible = "simple-audio-card";
+-		simple-audio-card,name = "rockchip,spdif";
+-		simple-audio-card,cpu {
+-			sound-dai = <&spdif>;
+-		};
+-		simple-audio-card,codec {
+-			sound-dai = <&spdif_out>;
+-		};
+-	};
+-
+-	spdif_out: spdif-out {
+-		compatible = "linux,spdif-dit";
+-		#sound-dai-cells = <0>;
+-	};
+-
+ 	vcc_host_vbus: host-vbus-regulator {
+ 		compatible = "regulator-fixed";
+-		gpio = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
++		gpio = <&gpio2 RK_PC6 GPIO_ACTIVE_HIGH>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&host_vbus_drv>;
+ 		regulator-name = "vcc_host_vbus";
+@@ -199,48 +169,6 @@
+ 		#clock-cells = <0>;
+ 	};
+ 
+-	wireless-bluetooth {
+-		compatible = "bluetooth-platdata";
+-		clocks = <&rk805 1>;
+-		clock-names = "ext_clock";
+-		uart_rts_gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+-		pinctrl-names = "default", "rts_gpio";
+-		pinctrl-0 = <&uart0_rts>;
+-		pinctrl-1 = <&uart0_gpios>;
+-		BT,power_gpio = <&gpio1 21 GPIO_ACTIVE_HIGH>;
+-		BT,wake_host_irq = <&gpio1 26 GPIO_ACTIVE_HIGH>;
+-		status = "okay";
+-	};
+-
+-	wireless-wlan {
+-		compatible = "wlan-platdata";
+-		rockchip,grf = <&grf>;
+-		wifi_chip_type = "ap6354";
+-		sdio_vref = <1800>;
+-		WIFI,host_wake_irq = <&gpio1 19 GPIO_ACTIVE_HIGH>;
+-		status = "okay";
+-	};
+-};
+-
+-&cif {
+-	status = "okay";
+-
+-	port {
+-		/* Parallel bus endpoint */
+-		cif_para_in: endpoint {
+-			remote-endpoint = <&cam_para_out1>;
+-			bus-width = <8>;
+-			hsync-active = <1>;
+-			vsync-active = <0>;
+-		};
+-
+-		/* MIPI CSI-2 endpoint */
+-		/*
+-		 * cif_mipi_in: endpoint {
+-		 *	remote-endpoint = <&csi_host_output>;
+-		 * };
+-		 */
+-	};
+ };
+ 
+ &codec {
+@@ -335,47 +263,6 @@
+ &i2c0 {
+ 	status = "okay";
+ 
+-	gc2145: gc2145@3c {
+-		status = "okay";
+-		compatible = "galaxycore,gc2145";
+-		reg = <0x3c>;
+-
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&dvp_d2d9_m1>;
+-
+-		reset-gpios = <&gpio0 27 GPIO_ACTIVE_LOW>; /* gpio0 d3 */
+-		/*
+-		 * pwdn gpio:conflict with gpio of vcc_otg_vbus
+-		 */
+-		pwdn-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+-		rockchip,camera-module-index = <1>;
+-		rockchip,camera-module-facing = "back";
+-		rockchip,camera-module-name = "CMK-OT1055-FG1";
+-		rockchip,camera-module-lens-name = "NC";
+-
+-		clocks = <&cru SCLK_CIF_OUT>;
+-		clock-names = "xvclk";
+-
+-		port {
+-			/* Parallel bus endpoint */
+-			cam_para_out1: endpoint {
+-				remote-endpoint = <&cif_para_in>;
+-				bus-width = <8>;
+-				hsync-active = <1>;
+-				vsync-active = <0>;
+-			};
+-
+-			/* MIPI CSI-2 endpoint */
+-			/*
+-			 * cam_mipi_out1: endpoint {
+-			 *	remote-endpoint = <&mipi_sensor_input>;
+-			 *	data-lanes = <1>;
+-			 *	clock-lanes = <0>;
+-			 *	clock-noncontinuous;
+-			 * };
+-			 */
+-		};
+-	};
+ };
+ 
+ &i2c1 {
+@@ -546,14 +433,9 @@
+ 	pmic {
+ 		pmic_int_l: pmic-int-l {
+ 		rockchip,pins =
+-			<2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;	/* gpio2_a6 */
+-		};
+-	};
+-
+-	sdio-pwrseq {
+-		wifi_enable_h: wifi-enable-h {
+-		rockchip,pins =
+-			<1 18 RK_FUNC_GPIO &pcfg_pull_none>;
++			<2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up
++			 2 RK_PD2 RK_FUNC_GPIO &pcfg_output_low
++             0 RK_PA0 RK_FUNC_GPIO &pcfg_output_high>;
+ 		};
+ 	};
+ 
+@@ -568,13 +450,6 @@
+ 				<0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
+-
+-	wireless-bluetooth {
+-		uart0_gpios: uart0-gpios {
+-			rockchip,pins =
+-				<1 10 RK_FUNC_GPIO &pcfg_pull_none>;
+-		};
+-	};
+ };
+ 
+ &pwm3 {
+@@ -708,7 +583,6 @@
+ 	disable-wp;
+ 	keep-power-in-suspend;
+ 	max-frequency = <150000000>;
+-	mmc-pwrseq = <&sdio_pwrseq>;
+ 	non-removable;
+ 	num-slots = <1>;
+ 	pinctrl-names = "default";
