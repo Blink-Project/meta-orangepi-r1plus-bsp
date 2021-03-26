@@ -16,7 +16,7 @@ index 4103342d426b..0c7503aada8a 100644
 -	"run distro_bootcmd;"
 -#endif
 +       "ext2load mmc 1:3 0x00280000 Image; \
-+        ext2load mmc 1:3 0x08300000 rk3328-evb.dtb; \
++        ext2load mmc 1:3 0x08300000 orangepi-r1plus.dtb; \
 +        booti 0x00280000 - 0x08300000;"
  
  #endif /* CONFIG_SPL_BUILD */
