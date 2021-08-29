@@ -11,7 +11,7 @@
 	model = "Orange pi R1 Plus";
 	compatible = "rockchip,rk3328";
  
- 	chosen {
+	chosen {
 		bootargs = "earlycon=uart8250,mmio32,0xff130000 kpti=0 console=ttyFIQ0 root=/dev/mmcblk0p4 rootwait coherent_pool=1m";
 	};
 
@@ -186,13 +186,13 @@
 	status = "okay";
 
 	route {
-		route_hdmi: route-hdmi {
+		route_tve: route-tve {
 			status = "okay";
 			logo,uboot = "logo.bmp";
 			logo,kernel = "logo_kernel.bmp";
 			logo,mode = "fullscreen";
 			charge_logo,mode = "fullscreen";
-			connect = <&vop_out_hdmi>;
+			connect = <&vop_out_tve>;
 		};
 	};
 };
@@ -210,11 +210,35 @@
 };
 
 &gmac2phy {
-	status = "okay";
+	status = "disabled";
 };
 
 &gmac2io {
-	status = "disabled";
+	assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
+	assigned-clock-parents = <&gmac_clkin>, <&gmac_clkin>;
+	clock_in_out = "input";
+	phy-supply = <&vcc_io>;
+	phy-handle = <&rtl8211e>;
+	phy-mode = "rgmii";
+	pinctrl-names = "default";
+	pinctrl-0 = <&rgmiim1_pins>;
+	snps,aal;
+	snps,reset-gpio = <&gpio1 RK_PC2 GPIO_ACTIVE_LOW>;
+	snps,reset-active-low;
+	snps,reset-delays-us = <0 10000 50000>;
+	tx_delay = <0x24>;
+	rx_delay = <0x18>;
+	status = "okay";
+
+	mdio {
+		compatible = "snps,dwmac-mdio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		rtl8211e: ethernet-phy@0 {
+			reg = <0>;
+		};
+	};
 };
 
 &gpu {
@@ -382,10 +406,10 @@
 &pinctrl {
 	pmic {
 		pmic_int_l: pmic-int-l {
-            rockchip,pins =
-		        <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up
-			    2 RK_PD2 RK_FUNC_GPIO &pcfg_output_low
-                0 RK_PA0 RK_FUNC_GPIO &pcfg_output_high>;
+			rockchip,pins =
+				<2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up
+				2 RK_PD2 RK_FUNC_GPIO &pcfg_output_low
+				0 RK_PA0 RK_FUNC_GPIO &pcfg_output_high>;
 		};
 	};
 
@@ -403,90 +427,90 @@
 	ir_key1 {
 		rockchip,usercode = <0x4040>;
 		rockchip,key_table =
-			<0xf2	KEY_REPLY>,
-			<0xba	KEY_BACK>,
-			<0xf4	KEY_UP>,
-			<0xf1	KEY_DOWN>,
-			<0xef	KEY_LEFT>,
-			<0xee	KEY_RIGHT>,
-			<0xbd	KEY_HOME>,
-			<0xea	KEY_VOLUMEUP>,
-			<0xe3	KEY_VOLUMEDOWN>,
-			<0xe2	KEY_SEARCH>,
-			<0xb2	KEY_POWER>,
-			<0xbc	KEY_MUTE>,
-			<0xec	KEY_MENU>,
-			<0xbf	0x190>,
-			<0xe0	0x191>,
-			<0xe1	0x192>,
-			<0xe9	183>,
-			<0xe6	248>,
-			<0xe8	185>,
-			<0xe7	186>,
-			<0xf0	388>,
-			<0xbe	0x175>;
+			<0xf2   KEY_REPLY>,
+			<0xba   KEY_BACK>,
+			<0xf4   KEY_UP>,
+			<0xf1   KEY_DOWN>,
+			<0xef   KEY_LEFT>,
+			<0xee   KEY_RIGHT>,
+			<0xbd   KEY_HOME>,
+			<0xea   KEY_VOLUMEUP>,
+			<0xe3   KEY_VOLUMEDOWN>,
+			<0xe2   KEY_SEARCH>,
+			<0xb2   KEY_POWER>,
+			<0xbc   KEY_MUTE>,
+			<0xec   KEY_MENU>,
+			<0xbf   0x190>,
+			<0xe0   0x191>,
+			<0xe1   0x192>,
+			<0xe9   183>,
+			<0xe6   248>,
+			<0xe8   185>,
+			<0xe7   186>,
+			<0xf0   388>,
+			<0xbe   0x175>;
 	};
 
 	ir_key2 {
 		rockchip,usercode = <0xff00>;
 		rockchip,key_table =
-			<0x39	KEY_POWER>,
-			<0x73	KEY_MUTE>,
-			<0xa4	KEY_PLAYPAUSE>,
-			<0x75	KEY_VOLUMEDOWN>,
-			<0x77	KEY_VOLUMEUP>,
-			<0x7d	KEY_MENU>,
-			<0xf9	KEY_HOME>,
-			<0x5f	KEY_BACK>,
-			<0xb9	KEY_UP>,
-			<0xe9	KEY_DOWN>,
-			<0xb8	KEY_LEFT>,
-			<0xea	KEY_RIGHT>,
-			<0xaa	KEY_REPLY>,
-			<0x55	KEY_1>,
-			<0x5b	KEY_2>,
-			<0xf8	KEY_3>,
-			<0x57	KEY_4>,
-			<0xed	KEY_5>,
-			<0xee	KEY_6>,
-			<0x59	KEY_7>,
-			<0xf1	KEY_8>,
-			<0xf2	KEY_9>,
-			<0xe0	KEY_BACKSPACE>,
-			<0x79	KEY_0>,
-			<0xa4	KEY_SETUP>;
+			<0x39   KEY_POWER>,
+			<0x73   KEY_MUTE>,
+			<0xa4   KEY_PLAYPAUSE>,
+			<0x75   KEY_VOLUMEDOWN>,
+			<0x77   KEY_VOLUMEUP>,
+			<0x7d   KEY_MENU>,
+			<0xf9   KEY_HOME>,
+			<0x5f   KEY_BACK>,
+			<0xb9   KEY_UP>,
+			<0xe9   KEY_DOWN>,
+			<0xb8   KEY_LEFT>,
+			<0xea   KEY_RIGHT>,
+			<0xaa   KEY_REPLY>,
+			<0x55   KEY_1>,
+			<0x5b   KEY_2>,
+			<0xf8   KEY_3>,
+			<0x57   KEY_4>,
+			<0xed   KEY_5>,
+			<0xee   KEY_6>,
+			<0x59   KEY_7>,
+			<0xf1   KEY_8>,
+			<0xf2   KEY_9>,
+			<0xe0   KEY_BACKSPACE>,
+			<0x79   KEY_0>,
+			<0xa4   KEY_SETUP>;
 	};
 
 	ir_key3 {
 		rockchip,usercode = <0x1dcc>;
 		rockchip,key_table =
-			<0xee	KEY_REPLY>,
-			<0xf0	KEY_BACK>,
-			<0xf8	KEY_UP>,
-			<0xbb	KEY_DOWN>,
-			<0xef	KEY_LEFT>,
-			<0xed	KEY_RIGHT>,
-			<0xfc	KEY_HOME>,
-			<0xf1	KEY_VOLUMEUP>,
-			<0xfd	KEY_VOLUMEDOWN>,
-			<0xb7	KEY_SEARCH>,
-			<0xff	KEY_POWER>,
-			<0xf3	KEY_MUTE>,
-			<0xbf	KEY_MENU>,
-			<0xf9	0x191>,
-			<0xf5	0x192>,
-			<0xb3	388>,
-			<0xbe	KEY_1>,
-			<0xba	KEY_2>,
-			<0xb2	KEY_3>,
-			<0xbd	KEY_4>,
-			<0xf9	KEY_5>,
-			<0xb1	KEY_6>,
-			<0xfc	KEY_7>,
-			<0xf8	KEY_8>,
-			<0xb0	KEY_9>,
-			<0xb6	KEY_0>,
-			<0xb5	KEY_BACKSPACE>;
+			<0xee   KEY_REPLY>,
+			<0xf0   KEY_BACK>,
+			<0xf8   KEY_UP>,
+			<0xbb   KEY_DOWN>,
+			<0xef   KEY_LEFT>,
+			<0xed   KEY_RIGHT>,
+			<0xfc   KEY_HOME>,
+			<0xf1   KEY_VOLUMEUP>,
+			<0xfd   KEY_VOLUMEDOWN>,
+			<0xb7   KEY_SEARCH>,
+			<0xff   KEY_POWER>,
+			<0xf3   KEY_MUTE>,
+			<0xbf   KEY_MENU>,
+			<0xf9   0x191>,
+			<0xf5   0x192>,
+			<0xb3   388>,
+			<0xbe   KEY_1>,
+			<0xba   KEY_2>,
+			<0xb2   KEY_3>,
+			<0xbd   KEY_4>,
+			<0xf9   KEY_5>,
+			<0xb1   KEY_6>,
+			<0xfc   KEY_7>,
+			<0xf8   KEY_8>,
+			<0xb0   KEY_9>,
+			<0xb6   KEY_0>,
+			<0xb5   KEY_BACKSPACE>;
 	};
 };
 
@@ -514,17 +538,7 @@
 };
 
 &sdio {
-	bus-width = <4>;
-	cap-sd-highspeed;
-	cap-sdio-irq;
-	keep-power-in-suspend;
-	max-frequency = <150000000>;
-    num-slots = <1>;
-	supports-sdio;
-	non-removable;
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk>;
-	status = "okay";
+	status = "disabled";
 };
 
 &sdmmc {
@@ -532,7 +546,7 @@
 	cap-mmc-highspeed;
 	cap-sd-highspeed;
 	disable-wp;
-    num-slots = <1>;
+	num-slots = <1>;
 	supports-sd;
 	status = "okay";
 	max-frequency = <150000000>;
