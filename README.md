@@ -28,7 +28,7 @@ I. Building core-image-minimal for orangepi-r1+
 > git clone http://git.yoctoproject.org/git/poky -b gatesgarth  
 > git clone https://github.com/aledemers/meta-orangepi-r1plus.git  
 > git clone git://git.yoctoproject.org/meta-rockchip -b yocto-next  
-> cd meta-rockchip && git checkout 4d55b666870cd818bb98081a9322cb0e5669f294 && cd ..  
+> cd meta-rockchip && git checkout 8715a854fa0778d8695d99b31da0d7557cddf3b1 && cd ..  
 2. Start environment:  
 > source poky/oe-init-build-env  
 3. Edit conf/local.conf and set the correct MACHINE:
