@@ -145,42 +145,6 @@
 		#clock-cells = <0>;
 	};
 
-	leds {
-		compatible = "gpio-leds";
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&led_pins>;
-
-		sys {
-			gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
-			label = "orangepi-r1plus:red:sys";
-		};
-
-		lan {
-			gpios = <&gpio2 RK_PB7 GPIO_ACTIVE_HIGH>;
-			label = "orangepi-r1plus:green:lan";
-		};
-
-		wan {
-			gpios = <&gpio2 RK_PC2 GPIO_ACTIVE_HIGH>;
-			label = "orangepi-r1plus:green:wan";
-		};
-	};
-
-	gpio_keys {
-		compatible = "gpio-keys-polled";
-		poll-interval = <100>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&button_pins>;
-
-		reset {
-			label = "Reset Button";
-			gpios = <&gpio0 RK_PA0 GPIO_ACTIVE_LOW>;
-			linux,code = <KEY_RESTART>;
-			debounce-interval = <50>;
-		};
-	};
 };
 
 &avsd {
@@ -440,20 +404,6 @@
 };
 
 &pinctrl {
-	leds {
-		led_pins: led-pins {
-			rockchip,pins = <3 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>,
-							<2 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>,
-							<2 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
-	button {
-		button_pins: button-pins {
-			rockchip,pins = <0 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
 	pmic {
 		pmic_int_l: pmic-int-l {
 			rockchip,pins =
