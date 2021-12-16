@@ -181,6 +181,10 @@
 	status = "okay";
 };
 
+&tve {
+	status = "okay";
+};
+
 &display_subsystem {
 	logo-memory-region = <&drm_logo>;
 	status = "okay";
