@@ -31,13 +31,8 @@ I. Building core-image-minimal for orangepi-r1+
 > cd meta-rockchip && git checkout 4d55b666870cd818bb98081a9322cb0e5669f294 && cd ..  
 2. Start environment:  
 > source poky/oe-init-build-env  
-3. Edit conf/local.conf and set the correct MACHINE:
-> MACHINE = "orangepi-r1plus"  
-4. Add meta-orangepi-r1plus and meta-rockchip layers to conf/bblayers.conf  
-4. Add a user to the image by adding the following lines at the end of the file:  
-> INHERIT += "extrausers"  
-> EXTRA_USERS_PARAMS = "usermod -P root root; "  
-5. Save local.conf file, then build a basic image:  
+3. You can use the example files local.conf.example and bblayers.conf.example from this repository to have a functionnal base. Put these files in "build/conf", removing the ".example" extension.  
+4. Build a basic image:  
 > bitbake core-image-minimal  
 
 II. Flashing the SD card

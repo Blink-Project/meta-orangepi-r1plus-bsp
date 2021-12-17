@@ -1,0 +1,31 @@
+# Local configuration for meta-rpi images
+# Yocto Project 2.5 Poky distribution [sumo] branch
+# This is a sysvinit system
+
+LICENSE_FLAGS_WHITELIST = "commercial"
+
+# Choose the board you are building for
+MACHINE = "orangepi-r1plus"
+
+# Choices are Image or zImage if NOT using u-boot (no u-boot is the default)
+# Choices are uImage or zImage if using u-boot, though if you choose zImage
+# with u-boot you will also have to change the boot script boot command
+
+ENABLE_UART="1"
+
+SSTATE_MIRRORS = "file://.* http://localhost/sstate-cache/PATH;downloadfilename=PATH \n"
+
+DISTRO = "alinuxi"
+
+# i686 or x86_64
+SDKMACHINE = "x86_64"
+
+RM_OLD_IMAGE = "1"
+
+INHERIT += "rm_work"
+
+CONF_VERSION = "1"
+
+# Remove black border
+DISABLE_OVERSCAN = "1"
+
