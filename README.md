@@ -28,7 +28,7 @@ I. Building core-image-minimal for orangepi-r1+
 > git clone http://git.yoctoproject.org/git/poky -b gatesgarth  
 > git clone https://github.com/aledemers/meta-orangepi-r1plus.git  
 > git clone https://github.com/JeffyCN/meta-rockchip.git  
-> cd meta-rockchip && git checkout 4d55b666870cd818bb98081a9322cb0e5669f294 && cd ..  
+> cd meta-rockchip && git checkout 0cac27f272549b40b00c6a6494c59f1b2a18bf6e && cd ..  
 2. Start environment:  
 > source poky/oe-init-build-env  
 3. You can use the example files local.conf.example and bblayers.conf.example from this repository to have a functionnal base. Put these files in "build/conf", removing the ".example" extension.  
