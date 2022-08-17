@@ -6,9 +6,10 @@ require linux-rockchip.inc
 
 inherit freeze-rev
 
-SRCREV = "8edd05816eb788f01ff1ba4c540c8ea4ac5f11fd"
+SRCREV = "kernel-4.19-2021_02_06"
+
 SRC_URI = " \
-	git://github.com/JeffyCN/mirrors.git;nobranch=1;branch=kernel-4.19-2021_02_06; \
+	git://github.com/aledemers/linux-rockchip.git;branch=kernel-4.19; \
 "
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
