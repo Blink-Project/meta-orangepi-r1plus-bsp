@@ -8,4 +8,7 @@ SRC_URI = " \
 	git://github.com/aledemers/rkbin.git;protocol=https;branch=master;name=rkbin;destsuffix=rkbin; \
 "
 
-SRC_URI += "file://0001-adapt-rkboot-for-orangepi.patch"
+SRC_URI += "file://0001-adapt-rkboot-for-orangepi.patch \
+            file://0002-make-it-compile-with-py3.patch"
+
+UBOOT_INITIAL_ENV = ""

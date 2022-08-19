@@ -1,0 +1,134 @@
+diff --git a/tools/dtoc/dtb_platdata.py b/tools/dtoc/dtb_platdata.py
+index ebf9133..94c720a 100644
+--- a/tools/dtoc/dtb_platdata.py
++++ b/tools/dtoc/dtb_platdata.py
+@@ -445,7 +445,7 @@ class DtbPlatdata(object):
+                 self.out(';\n')
+             self.out('};\n')
+ 
+-        for alias, struct_name in self._aliases.iteritems():
++        for alias, struct_name in self._aliases.items():
+             self.out('#define %s%s %s%s\n'% (STRUCT_PREFIX, alias,
+                                              STRUCT_PREFIX, struct_name))
+ 
+@@ -493,7 +493,7 @@ class DtbPlatdata(object):
+                         vals.append(get_value(prop.type, val))
+ 
+                     # Put 8 values per line to avoid very long lines.
+-                    for i in xrange(0, len(vals), 8):
++                    for i in range(0, len(vals), 8):
+                         if i:
+                             self.buf(',\n\t\t')
+                         self.buf(', '.join(vals[i:i + 8]))
+diff --git a/tools/dtoc/dtoc.py b/tools/dtoc/dtoc.py
+index 2a17893..608302d 100755
+--- a/tools/dtoc/dtoc.py
++++ b/tools/dtoc/dtoc.py
+@@ -47,11 +47,11 @@ def run_tests():
+         suite = unittest.TestLoader().loadTestsFromTestCase(module)
+         suite.run(result)
+ 
+-    print result
++    print(result)
+     for _, err in result.errors:
+-        print err
++        print(err)
+     for _, err in result.failures:
+-        print err
++        print(err)
+ 
+ if __name__ != '__main__':
+     sys.exit(1)
+diff --git a/tools/dtoc/fdt.py b/tools/dtoc/fdt.py
+index b864185..9c80568 100644
+--- a/tools/dtoc/fdt.py
++++ b/tools/dtoc/fdt.py
+@@ -90,7 +90,7 @@ class Prop:
+             while len(self.value) < len(newprop.value):
+                 self.value.append(val)
+ 
+-    def BytesToValue(self, bytes):
++    def BytesToValue(self, data):
+         """Converts a string of bytes into a type and value
+ 
+         Args:
+@@ -105,35 +105,35 @@ class Prop:
+                     TYPE_INT: a byte-swapped integer stored as a 4-byte string
+                     TYPE_BYTE: a byte stored as a single-byte string
+         """
+-        bytes = str(bytes)
+-        size = len(bytes)
+-        strings = bytes.split('\0')
++        data = bytes(data)
++        size = len(data)
++        strings = data.split(b'\0')
+         is_string = True
+         count = len(strings) - 1
+-        if count > 0 and not strings[-1]:
++        if count > 0 and not len(strings[-1]):
+             for string in strings[:-1]:
+                 if not string:
+                     is_string = False
+                     break
+                 for ch in string:
+-                    if ch < ' ' or ch > '~':
++                    if ch < 32 or ch > 127:
+                         is_string = False
+                         break
+         else:
+             is_string = False
+         if is_string:
+-            if count == 1:
+-                return TYPE_STRING, strings[0]
++            if count == 1: 
++                return TYPE_STRING, strings[0].decode()
+             else:
+-                return TYPE_STRING, strings[:-1]
++                return TYPE_STRING, [s.decode() for s in strings[:-1]]
+         if size % 4:
+             if size == 1:
+-                return TYPE_BYTE, bytes[0]
++                return TYPE_BYTE, chr(data[0])
+             else:
+-                return TYPE_BYTE, list(bytes)
++                return TYPE_BYTE, [chr(ch) for ch in list(data)]
+         val = []
+         for i in range(0, size, 4):
+-            val.append(bytes[i:i + 4])
++            val.append(data[i:i + 4])
+         if size == 4:
+             return TYPE_INT, val[0]
+         else:
+@@ -271,7 +271,7 @@ class Fdt:
+         if self._fname:
+             self._fname = fdt_util.EnsureCompiled(self._fname)
+ 
+-            with open(self._fname) as fd:
++            with open(self._fname, 'rb') as fd:
+                 self._fdt = bytearray(fd.read())
+                 self._fdt_obj = libfdt.Fdt(self._fdt)
+ 
+diff --git a/tools/dtoc/fdt_util.py b/tools/dtoc/fdt_util.py
+index 0364bc6..d396c91 100644
+--- a/tools/dtoc/fdt_util.py
++++ b/tools/dtoc/fdt_util.py
+@@ -23,10 +23,6 @@ def fdt32_to_cpu(val):
+     Return:
+         A native-endian integer value
+     """
+-    if sys.version_info > (3, 0):
+-        if isinstance(val, bytes):
+-            val = val.decode('utf-8')
+-        val = val.encode('raw_unicode_escape')
+     return struct.unpack('>I', val)[0]
+ 
+ def fdt_cells_to_cpu(val, cells):
+@@ -40,7 +36,7 @@ def fdt_cells_to_cpu(val, cells):
+     """
+     if not cells:
+         return 0
+-    out = long(fdt32_to_cpu(val[0]))
++    out = int(fdt32_to_cpu(val[0]))
+     if cells == 2:
+         out = out << 32 | fdt32_to_cpu(val[1])
+     return out
