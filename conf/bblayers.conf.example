@@ -8,19 +8,13 @@ BBFILES ?= ""
 YOCTOROOT = "${@os.path.abspath(os.path.join("${TOPDIR}", os.pardir))}"
 
 BBLAYERS ?= " \
-  ${YOCTOROOT}/poky/meta \
-  ${YOCTOROOT}/poky/meta-poky \
-  ${YOCTOROOT}/meta-openembedded/meta-oe \
-  ${YOCTOROOT}/meta-openembedded/meta-multimedia \
-  ${YOCTOROOT}/meta-openembedded/meta-networking \
-  ${YOCTOROOT}/meta-openembedded/meta-perl \
-  ${YOCTOROOT}/meta-openembedded/meta-python \
-  ${YOCTOROOT}/meta-python2 \
-  ${YOCTOROOT}/meta-qt5 \
-  ${YOCTOROOT}/meta-security \
-  ${YOCTOROOT}/meta-rust \
-  ${YOCTOROOT}/meta-rockchip \
-  ${YOCTOROOT}/meta-arm/meta-arm \
-  ${YOCTOROOT}/meta-arm/meta-arm-toolchain \
-  ${YOCTOROOT}/meta-orangepi-r1plus-bsp \
+  ${YOCTOROOT}/layers/poky/meta \
+  ${YOCTOROOT}/layers/poky/meta-poky \
+  ${YOCTOROOT}/layers/meta-openembedded/meta-oe \
+  ${YOCTOROOT}/layers/meta-openembedded/meta-multimedia \
+  ${YOCTOROOT}/layers/meta-openembedded/meta-networking \
+  ${YOCTOROOT}/layers/meta-openembedded/meta-perl \
+  ${YOCTOROOT}/layers/meta-openembedded/meta-python \
+  ${YOCTOROOT}/layers/meta-rockchip \
+  ${YOCTOROOT}/layers/meta-orangepi-r1plus \
   "

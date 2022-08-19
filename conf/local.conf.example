@@ -15,7 +15,7 @@ ENABLE_UART="1"
 
 SSTATE_MIRRORS = "file://.* http://localhost/sstate-cache/PATH;downloadfilename=PATH \n"
 
-DISTRO = "alinuxi"
+DISTRO = "poky"
 
 # i686 or x86_64
 SDKMACHINE = "x86_64"
