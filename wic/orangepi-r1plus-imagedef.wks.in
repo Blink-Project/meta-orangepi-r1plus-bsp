@@ -9,4 +9,5 @@ part --source rawcopy --sourceparams="file=idblock.img" --align 32 --no-table
 part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --align 8192
 part --source rawcopy --sourceparams="file=trust.img" --part-name trust
 part --source bootimg-partition --fstype ext2 --part-name boot
-part / --source rootfs --fstype ${RK_ROOTFS_TYPE} --part-name rootfs --uuid ${RK_ROOTDEV_UUID} --align 8192
+part --source rootfs --fstype ${RK_ROOTFS_TYPE} --part-name rootfs-banka --uuid ${ORANGEPI_BANK_A_PART_UUID} --align 8192 --fixed-size 2048M
+part --fstype ${RK_ROOTFS_TYPE} --part-name rootfs-bankb --uuid ${ORANGEPI_BANK_B_PART_UUID} --align 8192 --fixed-size 2048M
