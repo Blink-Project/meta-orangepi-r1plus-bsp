@@ -44,6 +44,6 @@ II. Flashing the SD card
 > tmp/deploy/images/orangepi-r1plus/core-image-minimal-orangepi-r1plus.wic  
 2. Insert the SD card to be programmed in your computer.  
 3. Flash the image, replacing sdX by your SD card identifier (e.g.: sdb):  
-> sudo dd if=tmp/deploy/images/orangepi-r1plus/core-image-minimal-orangepi-r1plus.wic of=/dev/sdX && sync  
+> sudo bmaptool --bmap tmp/deploy/images/orangepi-r1plus/core-image-minimal-orangepi-r1plus.wic.bmap tmp/deploy/images/orangepi-r1plus/core-image-minimal-orangepi-r1plus.wic /dev/sdX  
 4. Remove the SD card from your computer, insert it in your orangepi-r1+, and watch it boot!  
 5. UART console access will be provided on the 3-pins header beside the USB connector, baudrate=1500000 (see user orangepi r1+ user manual for more information about debug UART header)  
