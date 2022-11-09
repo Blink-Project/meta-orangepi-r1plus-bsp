@@ -12,7 +12,7 @@
 	compatible = "rockchip,rk3328";
  
 	chosen {
-		bootargs = "earlycon=uart8250,mmio32,0xff130000 kpti=0 console=ttyFIQ0 root=/dev/mmcblk0p4 rootwait coherent_pool=1m";
+		bootargs = "earlycon=uart8250,mmio32,0xff130000 kpti=0 console=ttyFIQ0 rootwait coherent_pool=1m";
 	};
 
 	adc-keys {
