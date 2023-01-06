@@ -45,7 +45,7 @@ index e5b8368..33a86c4 100644
 +		setenv bootargs \"${bootargs} root=${bootarg_roota}\";\
 +	fi; \
 +	ext2load mmc 1:3 0x00280000 Image; \
-+	ext2load mmc 1:3 0x08300000 orangepi-r1plus.dtb; \
++	ext2load mmc 1:3 0x08300000 rk3328-orangepi-r1-plus.dtb; \
 +	booti 0x00280000 - 0x08300000;"
 +
 +#define BOOTARGS_ROOTA "bootarg_roota=/dev/mmcblk0p4\0"

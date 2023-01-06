@@ -22,16 +22,8 @@ do_patch_append() {
 	done
 }
 
-# Hack for rockchip style images
 ROCKCHIP_KERNEL_IMAGES = "Image"
 KERNEL_IMAGETYPES += "${ROCKCHIP_KERNEL_IMAGES}"
-python () {
-    if not d.getVar('KERNEL_DEVICETREE'):
-        raise bb.parse.SkipPackage('KERNEL_DEVICETREE is not specified!')
-
-    # Use rockchip stype target, which is '<dts(w/o suffix)>.img'
-    d.setVar('KERNEL_IMAGETYPE_FOR_MAKE', ' ' + d.getVar('KERNEL_DEVICETREE').replace('rockchip/', '').replace('.dtb', '.img'));
-}
 
 # Force regenerating defconfig
 do_kernel_metadata_prepend() {
