@@ -17,7 +17,6 @@ WKS_FILE = "orangepi-r1plus-imagedef.wks.in"
 MACHINE_EXTRA_RRECOMMENDS += "kernel-modules"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-orangepi"
-PREFERRED_VERSION_linux-rockchip = "5.10%"
 
 KBUILD_DEFCONFIG = ""
 

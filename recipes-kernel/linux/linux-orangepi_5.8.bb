@@ -6,11 +6,11 @@ require linux-orangepi.inc
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}_${PV}:"
 
-SRCREV = "66fc4ec3454bf59fc6e6ceee6659c8a554f3bf6d"
+SRCREV = "bd9ae704e2f47bfe5b9921d78be8c5817e44a944"
 
 SRC_URI = " \
 	file://defconfig \
-	git://github.com/orangepi-xunlong/linux-orangepi.git;protocol=https;branch=orange-pi-5.10-rockchip64; \
+	git://github.com/orangepi-xunlong/linux-orangepi.git;protocol=https;branch=orange-pi-5.8-rockchip64; \
 "
 
 do_patch_append(){
@@ -20,4 +20,4 @@ do_patch_append(){
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
-LINUX_VERSION ?= "5.10"
+LINUX_VERSION ?= "5.8"
