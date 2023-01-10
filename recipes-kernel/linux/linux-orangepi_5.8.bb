@@ -11,6 +11,7 @@ SRCREV = "bd9ae704e2f47bfe5b9921d78be8c5817e44a944"
 SRC_URI = " \
 	file://defconfig \
 	git://github.com/orangepi-xunlong/linux-orangepi.git;protocol=https;branch=orange-pi-5.8-rockchip64; \
+	file://0001-enable-analog-sound-for-r1-plus-board.patch \
 "
 
 do_patch_append(){
