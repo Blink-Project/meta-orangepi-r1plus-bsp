@@ -2,6 +2,8 @@ This README file contains information on the contents of the meta-orangepi-r1plu
 
 It has been developped by myself (aledemers), for my own orangepi r1+ device, and it does not support all peripherals yet. Help me complete it if you want!  
 
+See this link for a complete build setup using this layer: [Yocto OrangePi R1+](https://github.com/aledemers/yocto-orangepi-r1plus)
+
 Dependencies
 ============
 
