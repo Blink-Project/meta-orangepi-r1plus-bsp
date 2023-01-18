@@ -1,18 +1,16 @@
-# Copyright (C) 2020, Rockchip Electronics Co., Ltd
-# Released under the MIT license (see COPYING.MIT for the terms)
+FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}_${PV}:${THISDIR}/${PN}:"
 
 require recipes-kernel/linux/linux-yocto.inc
-require linux-orangepi.inc
-
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}_${PV}:"
 
 SRCREV = "bd9ae704e2f47bfe5b9921d78be8c5817e44a944"
 
 SRC_URI = " \
 	file://defconfig \
+    file://0001-Rename-rk3328-orangepi-dtsi-to-match-kernel-5.10.patch \
 	git://github.com/orangepi-xunlong/linux-orangepi.git;protocol=https;branch=orange-pi-5.8-rockchip64; \
-	file://0001-enable-analog-sound-for-r1-plus-board.patch \
 "
+
+require linux-rockchip.inc
 
 do_patch_append(){
 	sed -i 's/-Wno-format-security/-Wno-format-security -Wno-implicit-fallthrough/g' ${S}/Makefile
