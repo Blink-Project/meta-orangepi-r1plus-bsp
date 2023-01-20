@@ -110,3 +110,9 @@
 		};
 	};
 };
+
+&gmac2io {
+	snps,reset-active-low;
+	snps,reset-delays-us = <0 10000 30000>;
+	snps,reset-gpio = <&gpio1 RK_PC2 GPIO_ACTIVE_LOW>;
+};

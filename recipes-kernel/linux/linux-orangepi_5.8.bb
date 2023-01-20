@@ -7,6 +7,7 @@ SRCREV = "bd9ae704e2f47bfe5b9921d78be8c5817e44a944"
 SRC_URI = " \
 	file://defconfig \
     file://0001-Rename-rk3328-orangepi-dtsi-to-match-kernel-5.10.patch \
+    file://0002-rk3328-orangepi-r1-plus-common.dtsi-fix-support-for-eth1.patch \
 	git://github.com/orangepi-xunlong/linux-orangepi.git;protocol=https;branch=orange-pi-5.8-rockchip64; \
 "
 
