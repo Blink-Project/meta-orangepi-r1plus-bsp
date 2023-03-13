@@ -31,8 +31,6 @@ I. Building core-image-minimal for orangepi-r1+
 > git clone http://git.yoctoproject.org/git/poky -b hardknott  
 > git clone git://git.openembedded.org/meta-openembedded -b hardknott  
 > git clone https://github.com/aledemers/meta-orangepi-r1plus.git  
-> git clone https://github.com/JeffyCN/meta-rockchip.git  
-> cd meta-rockchip && git checkout 0cac27f272549b40b00c6a6494c59f1b2a18bf6e && cd ..  
 > cd -  
 2. Start environment:  
 > source layers/poky/oe-init-build-env  
