@@ -6,7 +6,7 @@ SRC_URI += "file://orangepi-r1plus.dts \
             file://orangepi-r1plus-lts.dts \ 
             file://defconfig"
 
-do_configure_prepend() {
+do_configure:prepend() {
     cp ${WORKDIR}/*.dts ${STAGING_KERNEL_DIR}/arch/arm64/boot/dts/rockchip/
 }
 

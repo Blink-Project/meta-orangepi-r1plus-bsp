@@ -1,12 +1,18 @@
-From 5b1efafa1fc08334fce71b29fa347b5091caf2c1 Mon Sep 17 00:00:00 2001
+From a3e684353ea351e724ab183bc1ec607f5fc7d837 Mon Sep 17 00:00:00 2001
 From: Alexi Demers <alexidemers@gmail.com>
-Date: Mon, 7 Nov 2022 21:22:17 -0500
-Subject: [PATCH] Set root device in uboot instead of device tree
+Date: Sat, 22 Apr 2023 20:38:10 -0400
+Subject: [PATCH] rockchip-common: configure boot commands for dual bank and
+ apparmor=0
 
+apparmor is not enabled, and it must be explicited to avoid k3s from
+trying to use it.
+
+The double banking method allows to change the software bank with files
+located in /boot, i.e. banka and banb files.
 ---
  include/configs/rk3328_common.h   |  2 ++
- include/configs/rockchip-common.h | 21 ++++++++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ include/configs/rockchip-common.h | 22 +++++++++++++---------
+ 2 files changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/include/configs/rk3328_common.h b/include/configs/rk3328_common.h
 index f43fde4..245e657 100644
@@ -22,10 +28,10 @@ index f43fde4..245e657 100644
  
  #endif
 diff --git a/include/configs/rockchip-common.h b/include/configs/rockchip-common.h
-index e5b8368..33a86c4 100644
+index e5b8368..724b703 100644
 --- a/include/configs/rockchip-common.h
 +++ b/include/configs/rockchip-common.h
-@@ -135,15 +135,18 @@
+@@ -135,15 +135,19 @@
  		"setenv devtype ramdisk; setenv devnum 0;" \
  	"fi; \0"
  
@@ -39,7 +45,8 @@ index e5b8368..33a86c4 100644
 -	"run distro_bootcmd;"
 -#endif
 +#define RKIMG_BOOTCOMMAND		\
-+	"if load mmc 1:3 0x4000000 bankb; then \
++	"setenv bootargs \"${bootargs} apparmor=0 \"; \
++	if load mmc 1:3 0x4000000 bankb; then \
 +		setenv bootargs \"${bootargs} root=${bootarg_rootb}\"; \
 +	else \
 +		setenv bootargs \"${bootargs} root=${bootarg_roota}\";\

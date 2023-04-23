@@ -12,7 +12,7 @@ SRC_URI = " \
 	git://github.com/aledemers/rkdeveloptool.git;protocol=https;branch=master;name=tools;destsuffix=git/extra \
 "
 
-PV_append = "+git${SRCPV}"
+PV:append = "+git${SRCPV}"
 
 SRCREV_rkbin = "4ad65f2b5fe427661c607b829bab7b09f9a83d06"
 SRCREV_tools = "d7dcaab628441a78acc9814396a895c3b504139a"
@@ -20,7 +20,7 @@ SRCREV_FORMAT ?= "rkbin_tools"
 
 S = "${WORKDIR}/git"
 
-INSANE_SKIP_${PN} = "already-stripped"
+INSANE_SKIP:${PN} = "already-stripped"
 
 # The pre-built tools have different link loader, don't change them.
 UNINATIVE_LOADER := ""

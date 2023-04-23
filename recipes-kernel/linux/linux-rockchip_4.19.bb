@@ -7,14 +7,14 @@
 # here for reference.
 #
 #
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}_${PV}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}_${PV}:"
 
 require recipes-kernel/linux/linux-yocto.inc
 
 SRCREV = "kernel-4.19-2021_02_06"
 
 SRC_URI = " \
-	git://github.com/aledemers/linux-rockchip.git;branch=kernel-4.19; \
+	git://github.com/aledemers/linux-rockchip.git;branch=kernel-4.19;protocol=https; \
 "
 
 require linux-rockchip.inc

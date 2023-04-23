@@ -3,7 +3,7 @@
 # We keep it here, as the kernel 5.10 is the mainline proposed by orange pi. 
 # We should fix the issue in a near future.
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}_${PV}:${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}_${PV}:${THISDIR}/${PN}:"
 
 require recipes-kernel/linux/linux-yocto.inc
 
@@ -16,7 +16,7 @@ SRC_URI = " \
 
 require linux-rockchip.inc
 
-do_patch_append(){
+do_patch:append(){
 	sed -i 's/-Wno-format-security/-Wno-format-security -Wno-implicit-fallthrough/g' ${S}/Makefile
 }
 

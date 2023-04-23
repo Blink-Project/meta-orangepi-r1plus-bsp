@@ -10,7 +10,7 @@ RK_WIFIBT_FIRMWARES = " \
 	brcm-tools \
 "
 
-IMAGE_POSTPROCESS_COMMAND_remove = "gen_rkupdateimg;"
+IMAGE_POSTPROCESS_COMMAND:remove = "gen_rkupdateimg;"
 
 WKS_FILE = "orangepi-r1plus-imagedef.wks.in"
 
@@ -27,7 +27,5 @@ IMAGE_INSTALL += "u-boot-fw-utils rockchip-libmali"
 ORANGEPI_BANK_A_PART_UUID = "614e0000-0000-4b53-8000-1d28000054a9"
 ORANGEPI_BANK_B_PART_UUID = "614e0000-0000-4b53-8000-1d28000054aa"
 ORANGEPI_DATA_PART_UUID = "614e0000-0000-4b53-8000-1d28000054ab"
-
-LINUXLIBCVERSION = "5.10%"
 
 PREFERRED_VERSION_u-boot = "1:2017.09%"

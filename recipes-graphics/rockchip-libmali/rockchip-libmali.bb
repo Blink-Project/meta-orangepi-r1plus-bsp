@@ -7,7 +7,7 @@ SECTION = "libs"
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "file://END_USER_LICENCE_AGREEMENT.txt;md5=3918cc9836ad038c5a090a0280233eea"
 
-PV_append = "+git${SRCPV}"
+PV:append = "+git${SRCPV}"
 
 SRC_URI = " \
 	git://github.com/aledemers/rockchip-libmali.git;protocol=https;branch=master; \
@@ -28,13 +28,13 @@ MALI_PLATFORM ??= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland',
 # The ICD OpenCL implementation should work with opencl-icd-loader.
 PROVIDES += "${@ 'virtual/opencl-icd' if not d.getVar('MALI_GPU').startswith('utgard') and d.getVar('MALI_SUBVERSION') != 'without-cl' else ''}"
 
-RDEPENDS_${PN} = " \
+RDEPENDS:${PN} = " \
 	${@ 'wayland' if 'wayland' == d.getVar('MALI_PLATFORM') else ''} \
 	${@ 'libx11 libxcb' if 'x11' == d.getVar('MALI_PLATFORM') else ''} \
 	${@ 'opencl-icd-loader' if not d.getVar('MALI_GPU').startswith('utgard') and d.getVar('MALI_SUBVERSION') != 'without-cl' else ''} \
 "
 
-DEPENDS_append = " \
+DEPENDS:append = " \
 	${@ 'wayland' if 'wayland' == d.getVar('MALI_PLATFORM') else ''} \
 	${@ 'libx11 libxcb' if 'x11' == d.getVar('MALI_PLATFORM') else ''} \
 "
@@ -75,7 +75,7 @@ EXTRA_OEMESON = " \
 	-Dplatform=${MALI_PLATFORM} \
 "
 
-do_install_append () {
+do_install:append () {
 	if grep -q "\-DMESA_EGL_NO_X11_HEADERS" \
 		${D}${libdir}/pkgconfig/egl.pc; then
 		sed -i 's/defined(MESA_EGL_NO_X11_HEADERS)/1/' \
@@ -83,20 +83,20 @@ do_install_append () {
 	fi
 }
 
-INSANE_SKIP_${PN} = "already-stripped ldflags dev-so textrel"
-INSANE_SKIP_${PN}-dev = "staticdev"
+INSANE_SKIP:${PN} = "already-stripped ldflags dev-so textrel"
+INSANE_SKIP:${PN}-dev = "staticdev"
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
-RPROVIDES_${PN} += "libmali"
+RPROVIDES:${PN} += "libmali"
 
-FILES_${PN}-staticdev = ""
-FILES_${PN}-dev = " \
+FILES:${PN}-staticdev = ""
+FILES:${PN}-dev = " \
 	${includedir} \
 	${libdir}/lib*.a \
 	${libdir}/pkgconfig \
 "
 
 # Any remaining files, including .so links for utgard DDK's internal dlopen
-FILES_${PN} = "*"
+FILES:${PN} = "*"

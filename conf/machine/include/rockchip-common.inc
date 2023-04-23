@@ -3,7 +3,7 @@
 
 require conf/machine/include/soc-family.inc
 
-MACHINE_EXTRA_RRECOMMENDS_append = " \
+MACHINE_EXTRA_RRECOMMENDS:append = " \
 	${RK_WIFIBT_FIRMWARES} \
 	kernel-modules \
 "
@@ -17,16 +17,8 @@ MACHINEOVERRIDES .= ":rockchip"
 
 PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
 
-PREFERRED_PROVIDER_virtual/kernel ?= "linux-rockchip"
-
-# Prefer using Rockchip BSP kernel 4.4
-#PREFERRED_VERSION_linux-rockchip ?= "4.19%"
-#LINUXLIBCVERSION ?= "4.19-custom%"
-PREFERRED_VERSION_linux-rockchip ?= "4.4%"
-LINUXLIBCVERSION ?= "4.4-custom%"
-
 # Custom kernel might not support newest python
-PACKAGECONFIG_remove_pn-perf += " scripting"
+PACKAGECONFIG:remove:pn-perf = " scripting"
 
 PREFERRED_PROVIDER_virtual/egl ?= "rockchip-libmali"
 PREFERRED_PROVIDER_virtual/libgles1 ?= "rockchip-libmali"
@@ -34,9 +26,9 @@ PREFERRED_PROVIDER_virtual/libgles2 ?= "rockchip-libmali"
 PREFERRED_PROVIDER_virtual/libgles3 ?= "rockchip-libmali"
 PREFERRED_PROVIDER_virtual/libopencl ?= "rockchip-libmali"
 PREFERRED_PROVIDER_virtual/libgbm ?= "rockchip-libmali"
-PACKAGECONFIG_pn-wayland ?= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'no-egl', '', d)}"
+PACKAGECONFIG:pn-wayland ?= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'no-egl', '', d)}"
 
-DEPENDS_append_pn-mesa-gl += " rockchip-libmali"
+DEPENDS:append_pn-mesa-gl = " rockchip-libmali"
 
 PREFERRED_PROVIDER_virtual/libgl ?= "mesa-gl"
 PREFERRED_PROVIDER_virtual/mesa ?= "mesa-gl"
@@ -49,7 +41,7 @@ export RK_PARTITION_GROW ?= "1"
 RK_USE_COMPRESSED_KERNEL ?= "1"
 RDEPENDS_${KERNEL_PACKAGE_NAME}-base = ""
 
-IMAGE_FSTYPES_remove += "iso live"
+IMAGE_FSTYPES:remove = "iso live"
 export RK_ROOTFS_TYPE ?= "ext4"
 
 IMAGE_FSTYPES += "${RK_ROOTFS_TYPE} wic"
@@ -76,7 +68,7 @@ addtask do_fixup_wks after do_write_wks_template before do_image_wic
 
 RK_POST_ROOTFS_SCRIPTS ?= ""
 RK_OVERLAY_DIRS ?= ""
-BB_HASHBASE_WHITELIST_append += " RK_POST_ROOTFS_SCRIPTS RK_OVERLAY_DIRS"
+BB_HASHBASE_IGNORE_VARS:append = " RK_POST_ROOTFS_SCRIPTS RK_OVERLAY_DIRS"
 
 # <fslabel:mountpoint> e.g. "oem:/oem userdata:/userdata"
 RK_EXTRA_VOLUMES ?= ""

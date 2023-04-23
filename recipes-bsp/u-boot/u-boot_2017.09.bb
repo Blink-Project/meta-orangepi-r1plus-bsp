@@ -10,7 +10,7 @@ PV = "2017.09+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRCREV = "4862c9859b5624398dd1b74f7ae9a612c68f513c"
 SRCREV_rkbin = "rkbin-2021_05_18"
@@ -22,9 +22,9 @@ BASE_SRC_URI = "\
            file://0001-Revert-Makefile-enable-Werror-option.patch \
            "
 
-SRC_URI_orangepi-r1plus = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi.patch "
+SRC_URI:orangepi-r1plus = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi.patch "
 
-SRC_URI_orangepi-r1plus-lts = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi-lts.patch "
+SRC_URI:orangepi-r1plus-lts = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi-lts.patch "
 
 SRCREV_FORMAT = "default_rkbin"
 
@@ -33,7 +33,7 @@ DEPENDS += "${PYTHON_PN}-native bc-native dtc-native python3-setuptools-native"
 # Needed for packing BSP u-boot
 DEPENDS += "coreutils-native ${PYTHON_PN}-pyelftools-native"
 
-do_configure_prepend() {
+do_configure:prepend() {
 	# Make sure we use /usr/bin/env ${PYTHON_PN} for scripts
 	for s in `grep -rIl python ${S}`; do
 		sed -i -e '1s|^#!.*python[23]*|#!/usr/bin/env ${PYTHON_PN}|' $s
@@ -66,7 +66,7 @@ RK_LOADER_BIN = "loader.bin"
 RK_TRUST_IMG = "trust.img"
 UBOOT_BINARY = "uboot.img"
 
-do_compile_append() {
+do_compile:append() {
 	cd ${B}
 
 	if [ -e "${B}/prebuilt/${UBOOT_BINARY}" ]; then
@@ -98,7 +98,7 @@ do_compile_append() {
 	cat FlashBoot >> "${RK_IDBLOCK_IMG}"
 }
 
-do_deploy_append() {
+do_deploy:append() {
 	cd ${B}
 
 	for binary in "${RK_IDBLOCK_IMG}" "${RK_LOADER_BIN}" "${RK_TRUST_IMG}";do
