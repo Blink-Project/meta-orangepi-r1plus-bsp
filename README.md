@@ -1,21 +1,18 @@
 This README file contains information on the contents of the meta-orangepi-r1plus-bsp layer.
 
-It has been developped by myself (aledemers), for my own orangepi r1+ device, and it does not support all peripherals yet. Help me complete it if you want!  
-
 See this link for a complete build setup using this layer: [Yocto OrangePi R1+](https://github.com/aledemers/yocto-orangepi-r1plus)
 
 Dependencies
 ============
 
-  Layer: meta-rockchip  
-  branch: yocto-next  
+  Layer: poky  
 
 Patches
 =======
 
 Please submit any patches against the meta-orangepi-r1plus-bsp layer to the current github repository. 
 
-Maintainer: Alexi Demers <alexidemers@gmail.com>
+Maintainers: Samuel Geoffroy-Héroux <samuel@geoffroy.dev> and Alexi Demers <alexidemers@gmail.com>
 
 Table of Contents
 =================
@@ -28,8 +25,8 @@ I. Building core-image-minimal for orangepi-r1+
 
 1. Clone Poky and current repository:  
 > mkdir layers && cd layers  
-> git clone http://git.yoctoproject.org/git/poky -b hardknott  
-> git clone git://git.openembedded.org/meta-openembedded -b hardknott  
+> git clone http://git.yoctoproject.org/git/poky -b kirkstone 
+> git clone git://git.openembedded.org/meta-openembedded -b kirkstone  
 > git clone https://github.com/aledemers/meta-orangepi-r1plus.git  
 > cd -  
 2. Start environment:  
