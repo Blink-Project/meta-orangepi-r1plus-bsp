@@ -1,0 +1,13 @@
+[Unit]
+Description=Format or Recover Data Partition
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/try-recovering-or-format-datapartition.sh
+TimeoutSec=300
+
+[Install]
+WantedBy=basic.target

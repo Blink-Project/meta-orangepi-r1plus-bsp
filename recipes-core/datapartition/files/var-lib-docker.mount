@@ -1,0 +1,14 @@
+[Unit]
+Description=Mount Docker Folder Over Data Partition
+Before=basic.target
+After=datapartition.mount
+DefaultDependencies=no
+
+[Mount]
+What=/data/docker
+Where=/var/lib/docker
+Type=none
+Options=bind
+
+[Install]
+WantedBy=basic.target
