@@ -25,7 +25,7 @@ I. Building core-image-minimal for orangepi-r1+
 
 1. Clone Poky and current repository:  
 > mkdir layers && cd layers  
-> git clone http://git.yoctoproject.org/git/poky -b kirkstone 
+> git clone http://git.yoctoproject.org/git/poky -b kirkstone  
 > git clone git://git.openembedded.org/meta-openembedded -b kirkstone  
 > git clone https://github.com/aledemers/meta-orangepi-r1plus.git  
 > cd -  
