@@ -15,16 +15,13 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 SRCREV = "4862c9859b5624398dd1b74f7ae9a612c68f513c"
 SRCREV_rkbin = "rkbin-2021_05_18"
 
-BASE_SRC_URI = "\
+SRC_URI = "\
            git://github.com/aledemers/u-boot-rockchip.git;protocol=https;branch=u-boot-2017.09; \
            git://github.com/aledemers/rkbin.git;protocol=https;branch=master;name=rkbin;destsuffix=rkbin; \
            file://0002-make-it-compile-with-py3.patch \
            file://0001-Revert-Makefile-enable-Werror-option.patch \
+           file://0003-rockchip-common-configure-boot-commands-and-apparmor.patch \
            "
-
-SRC_URI:orangepi-r1plus = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi.patch "
-
-SRC_URI:orangepi-r1plus-lts = "${BASE_SRC_URI} file://0001-adapt-rkboot-for-orangepi-lts.patch "
 
 SRCREV_FORMAT = "default_rkbin"
 
