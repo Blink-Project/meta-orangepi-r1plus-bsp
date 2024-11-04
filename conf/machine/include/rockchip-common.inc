@@ -15,7 +15,7 @@ KERNEL_IMAGETYPE ?= "Image"
 KBUILD_DEFCONFIG ?= "rockchip_linux_defconfig"
 MACHINEOVERRIDES .= ":rockchip"
 
-PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot"
+PREFERRED_PROVIDER_virtual/bootloader = "u-boot-rockchip"
 
 # Custom kernel might not support newest python
 PACKAGECONFIG:remove:pn-perf = " scripting"

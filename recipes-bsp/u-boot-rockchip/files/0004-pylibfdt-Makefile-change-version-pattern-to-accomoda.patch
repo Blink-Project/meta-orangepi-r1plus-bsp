@@ -1,0 +1,25 @@
+From 0c8666875608698bb8d481ed9ede7eafbd1a7cf0 Mon Sep 17 00:00:00 2001
+From: Alexi Demers <alexidemers@gmail.com>
+Date: Wed, 30 Oct 2024 21:32:14 -0400
+Subject: [PATCH] pylibfdt: Makefile: change version pattern to accomodate
+ setup.py
+
+setuptools is now more strict with versioning scheme, and refuses a
+version like u-boo-2017.04. This commit reduces the version to 2017.04
+---
+ scripts/dtc/pylibfdt/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/dtc/pylibfdt/Makefile b/scripts/dtc/pylibfdt/Makefile
+index 01d5e0f..c0db621 100644
+--- a/scripts/dtc/pylibfdt/Makefile
++++ b/scripts/dtc/pylibfdt/Makefile
+@@ -16,7 +16,7 @@ PYLIBFDT_srcs = $(addprefix $(LIBFDT_srcdir)/,$(LIBFDT_SRCS)) \
+ quiet_cmd_pymod = PYMOD   $@
+       cmd_pymod = unset CC; unset CROSS_COMPILE; unset CFLAGS;\
+ 		LDFLAGS="$(HOSTLDFLAGS)" \
+-		VERSION="u-boot-$(UBOOTVERSION)" \
++		VERSION="$(UBOOTVERSION)" \
+ 		CPPFLAGS="$(HOSTCFLAGS) -I$(LIBFDT_srcdir)" OBJDIR=$(obj) \
+ 		SOURCES="$(PYLIBFDT_srcs)" \
+ 		SWIG_OPTS="-I$(LIBFDT_srcdir) -I$(LIBFDT_srcdir)/.." \

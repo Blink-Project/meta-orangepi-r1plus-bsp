@@ -1,5 +1,17 @@
+From 39bd4f1d2c377e2a62cc582ffb1261b27da4915a Mon Sep 17 00:00:00 2001
+From: Alexi Demers <alexidemers@gmail.com>
+Date: Wed, 30 Oct 2024 21:24:43 -0400
+Subject: [PATCH] dtoc: adjust python scripts to be executed on Python3
+
+---
+ tools/dtoc/dtb_platdata.py |  4 ++--
+ tools/dtoc/dtoc.py         |  6 +++---
+ tools/dtoc/fdt.py          | 26 +++++++++++++-------------
+ tools/dtoc/fdt_util.py     |  6 +-----
+ 4 files changed, 19 insertions(+), 23 deletions(-)
+
 diff --git a/tools/dtoc/dtb_platdata.py b/tools/dtoc/dtb_platdata.py
-index ebf9133..94c720a 100644
+index c5767e5..d61f699 100644
 --- a/tools/dtoc/dtb_platdata.py
 +++ b/tools/dtoc/dtb_platdata.py
 @@ -445,7 +445,7 @@ class DtbPlatdata(object):
@@ -21,7 +33,7 @@ index ebf9133..94c720a 100644
                              self.buf(',\n\t\t')
                          self.buf(', '.join(vals[i:i + 8]))
 diff --git a/tools/dtoc/dtoc.py b/tools/dtoc/dtoc.py
-index 2a17893..608302d 100755
+index 6eacfc9..7568ba2 100755
 --- a/tools/dtoc/dtoc.py
 +++ b/tools/dtoc/dtoc.py
 @@ -47,11 +47,11 @@ def run_tests():
@@ -40,7 +52,7 @@ index 2a17893..608302d 100755
  if __name__ != '__main__':
      sys.exit(1)
 diff --git a/tools/dtoc/fdt.py b/tools/dtoc/fdt.py
-index b864185..9c80568 100644
+index dbc3386..ad03bd1 100644
 --- a/tools/dtoc/fdt.py
 +++ b/tools/dtoc/fdt.py
 @@ -90,7 +90,7 @@ class Prop:
@@ -109,7 +121,7 @@ index b864185..9c80568 100644
                  self._fdt_obj = libfdt.Fdt(self._fdt)
  
 diff --git a/tools/dtoc/fdt_util.py b/tools/dtoc/fdt_util.py
-index 0364bc6..d396c91 100644
+index 338d47a..25884a0 100644
 --- a/tools/dtoc/fdt_util.py
 +++ b/tools/dtoc/fdt_util.py
 @@ -23,10 +23,6 @@ def fdt32_to_cpu(val):
@@ -132,3 +144,6 @@ index 0364bc6..d396c91 100644
      if cells == 2:
          out = out << 32 | fdt32_to_cpu(val[1])
      return out
+-- 
+2.34.1
+
