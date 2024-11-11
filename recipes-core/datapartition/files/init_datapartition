@@ -1,0 +1,85 @@
+#!/bin/sh
+
+# This script is meant to be run from initramfs, before the rootfs'
+# init script starts (before systemd).
+# It is necessary to configure the overlayfs in initramfs, as otherwise
+# changes to /etc would not be taken into consideration by systemd (service
+# enablement would be ignored, for example)
+#
+# It creates a data partition that covers all the unused space
+# of the root mmcblk and mounts an overlayfs over /home and /etc
+# which the upperdir is in that data partition. This enables
+# saving the state of /etc and /home throughout SD card updates/flash.
+#
+# The datapartition is not erased when we flash the SD card with a new
+# blink OS image, as all blink OS images have the exact same size. This script
+# recovers the content of the data partition after the SD card is re-programmed.
+
+DATAPARTITION_DEV=/dev/mmcblk0
+DATAPARTITION_NO=5
+DATAPARTITION="${DATAPARTITION_DEV}p${DATAPARTITION_NO}"
+
+DATAPARTITION_MOUNTPOINT=/data
+OVERLAYFS_DIR=${DATAPARTITION_MOUNTPOINT}/overlayfs
+HOME_OVERLAYFS_DIR=${OVERLAYFS_DIR}/home
+ETC_OVERLAYFS_DIR=${OVERLAYFS_DIR}/etc
+
+try_repair_datapartition_filesystem() {
+    e2fsck -y "${DATAPARTITION}" 
+}
+
+datapartition_has_filesystem() {
+    mount "${DATAPARTITION}" /mnt
+    ret=$?
+
+    if [ "${ret}" = 0 ];then
+        umount "${DATAPARTITION}" 
+    fi
+    return "${ret}"
+}
+
+create_overlayfs_folders() {
+    mkdir -p ${HOME_OVERLAYFS_DIR}
+    mkdir -p ${HOME_OVERLAYFS_DIR}-work
+    mkdir -p ${ETC_OVERLAYFS_DIR}
+    mkdir -p ${ETC_OVERLAYFS_DIR}-work
+}
+
+mount_overlayfs() {
+    mount -t overlay -o upperdir=${HOME_OVERLAYFS_DIR},lowerdir=/home/,workdir=${HOME_OVERLAYFS_DIR}-work overlay /home
+    mount -t overlay -o upperdir=${ETC_OVERLAYFS_DIR},lowerdir=/etc/,workdir=${ETC_OVERLAYFS_DIR}-work overlay /etc
+}
+
+if [ ! -e "${DATAPARTITION}" ]; then
+    cat <<-EOF
+	==================================================
+	= Configuring Data Partition
+	==================================================
+	EOF
+    (echo n; echo ${DATAPARTITION_NO}; echo; echo; echo w)| fdisk "${DATAPARTITION_DEV}"
+    try_repair_datapartition_filesystem
+    if datapartition_has_filesystem; then
+        cat <<-EOF
+		==================================================
+		= Data Partition Content Was Recovered
+		==================================================
+		EOF
+    else
+        cat <<-EOF
+		==================================================
+		= Creating Brand New Data Partition
+		==================================================
+		EOF
+        echo | mkfs.ext3 "${DATAPARTITION}"
+    fi
+fi
+
+mkdir -p "${DATAPARTITION_MOUNTPOINT}"
+
+mount -v "${DATAPARTITION}" "${DATAPARTITION_MOUNTPOINT}"
+
+create_overlayfs_folders
+
+mount_overlayfs
+
+exec /sbin/init
