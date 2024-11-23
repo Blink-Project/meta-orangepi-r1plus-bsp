@@ -27,3 +27,7 @@ IMAGE_INSTALL += "u-boot-fw-utils rockchip-libmali"
 ORANGEPI_ROOTFS_PART_UUID = "614e0000-0000-4b53-8000-1d28000054a9"
 
 INITRAMFS_IMAGE_BUNDLE = "1"
+
+# Necessary because uboot sets the init script to /sbin/init_datapartition instead
+# of /sbin/init
+MACHINE_ESSENTIAL_EXTRA_RDEPENDS += "datapartition"
